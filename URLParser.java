@@ -56,7 +56,9 @@ public class URLParser {
 		while (srcm.find()) {
 			urlList.add(srcm.group(1));
 		}
-		List<String> list = urlList.stream().filter(line -> line.contains("http")).collect(Collectors.toList());
+		List<String> list = urlList.stream()
+				.filter(line -> line.contains("http"))
+				.collect(Collectors.toList());
 		return urlList = (ArrayList<String>) list;
 	}
 
