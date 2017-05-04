@@ -7,14 +7,13 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class URLParser {
-	private ArrayList<String> urlList = new ArrayList<>();
+	private HashSet<String>urlset= new HashSet<>();
 	private String url;
 	private File file;
 
@@ -45,24 +44,24 @@ public class URLParser {
 		return sb.toString();
 	}
 
-	private ArrayList<String> getURL(String html) {
+	private HashSet<String> getURL(String html) {
 		Pattern hrefp = Pattern.compile("href=\"(.+?)\"");
 		Pattern srcp = Pattern.compile("src=\"(.+?)\"");
 		Matcher hrefm = hrefp.matcher(html);
 		Matcher srcm = srcp.matcher(html);
 		while (hrefm.find()) {
-			urlList.add(hrefm.group(1));
+			urlset.add(hrefm.group(1));
 		}
 		while (srcm.find()) {
-			urlList.add(srcm.group(1));
+			urlset.add(srcm.group(1));
 		}
-		List<String> list = urlList.stream()
+		HashSet<String> list = (HashSet<String>) urlset.stream()
 				.filter(line -> line.contains("http"))
-				.collect(Collectors.toList());
-		return urlList = (ArrayList<String>) list;
+				.collect(Collectors.toSet());
+		return urlset = list;
 	}
 
-	private void saveToFile(ArrayList<String> list, File file) {
+	private void saveToFile(HashSet<String> list, File file) {
 		try (PrintWriter pw = new PrintWriter(file)) {
 			for (String text : list) {
 				pw.println(text);
